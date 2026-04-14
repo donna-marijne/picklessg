@@ -3,7 +3,11 @@ import shutil
 
 
 def copy_assets(source_dir, dest_dir):
-    clean_dir(dest_dir)
+    if os.path.isdir(dest_dir):
+        clean_dir(dest_dir)
+    else:
+        print(f"mkdir: {dest_dir}")
+        os.mkdir(dest_dir)
     copy_assets_in_dir(source_dir, dest_dir)
 
 
