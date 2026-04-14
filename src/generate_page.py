@@ -4,6 +4,21 @@ from extract import extract_title
 from markdown_to_html_node import markdown_to_html_node
 
 
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    for name in os.listdir(dir_path_content):
+        path = os.path.join(dir_path_content, name)
+        if os.path.isfile(path):
+            name_root, ext = os.path.splitext(name)
+            if ext != ".md":
+                print(f"non-markdown file ignored: {dir_path_content}/{name}")
+                continue
+            dest_path = os.path.join(dest_dir_path, name_root + ".html")
+            generate_page(path, template_path, dest_path)
+        else:
+            dest_path = os.path.join(dest_dir_path, name)
+            generate_pages_recursive(path, template_path, dest_path)
+
+
 def generate_page(from_path, template_path, dest_path):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
 
@@ -17,7 +32,7 @@ def generate_page(from_path, template_path, dest_path):
         "{{ Content }}", html_content
     )
 
-    dest_dir = os.path.basename(dest_path)
+    dest_dir = os.path.dirname(dest_path)
     if not os.path.exists(dest_dir):
         print(f"makedirs: {dest_dir}")
         os.makedirs(dest_dir)
