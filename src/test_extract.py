@@ -1,6 +1,6 @@
 import unittest
 
-from extract import extract_markdown_images, extract_markdown_links
+from extract import extract_markdown_images, extract_markdown_links, extract_title
 
 
 class TestExtractMarkdownImages(unittest.TestCase):
@@ -53,6 +53,37 @@ class TestExtractMarkdownLinks(unittest.TestCase):
             ],
             matches,
         )
+
+
+class TestExtractTitle(unittest.TestCase):
+    def test_extract_title(self):
+        markdown = """
+# My project
+
+Welcome to my project!
+"""
+        title = extract_title(markdown)
+        self.assertEqual(title, "My project")
+
+    def test_extract_title_on_third_line(self):
+        markdown = """
+> Make sure to star my project!
+
+# My project
+
+Welcome to my project!
+"""
+        title = extract_title(markdown)
+        self.assertEqual(title, "My project")
+
+    def test_extract_title_no_title(self):
+        markdown = """
+> Make sure to star my project!
+
+Welcome to my project!
+"""
+        with self.assertRaises(ValueError):
+            extract_title(markdown)
 
 
 if __name__ == "__main__":

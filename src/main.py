@@ -1,11 +1,11 @@
-from textnode import TextNode, TextType
+from copy_assets import copy_assets
+from generate_page import generate_page
 
 
 def main():
-    text_node = TextNode("hello, world!", TextType.BOLD)
-    print(text_node)
-    text_node = TextNode("boot.dev", TextType.LINK, "https://boot.dev")
-    print(text_node)
+    print("it's picklin' time!")
+    copy_assets("./static", "./public")
+    generate_page("./content/index.md", "./template.html", "./public/index.html")
 
 
 if __name__ == "__main__":
